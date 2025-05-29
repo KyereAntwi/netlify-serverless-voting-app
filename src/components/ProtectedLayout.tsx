@@ -1,6 +1,7 @@
 import { withAuthenticationRequired } from "@auth0/auth0-react";
-import { Flex, Spinner } from "@chakra-ui/react";
+import { Box, Flex, Spinner } from "@chakra-ui/react";
 import { Outlet } from "react-router";
+import MainNav from "./MainNav";
 
 const ProtectedOutlet = withAuthenticationRequired(Outlet, {
   onRedirecting: () => (
@@ -25,7 +26,10 @@ const ProtectedOutlet = withAuthenticationRequired(Outlet, {
 const ProtectedLayout = () => {
   return (
     <>
-      <ProtectedOutlet />
+      <MainNav />
+      <Box as="main" maxW="7xl" mx="auto" px={{ base: 4, md: 8 }} py={"70px"}>
+        <ProtectedOutlet />
+      </Box>
     </>
   );
 };

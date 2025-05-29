@@ -12,7 +12,7 @@ export const getWorkspaces = async (userId: string) => {
     .from("workspaces")
     .select("*")
     .order("created_at", { ascending: false })
-    .filter("user_id", "eq", userId);
+    .filter("created_by", "eq", userId);
 
   if (error) {
     const err: ErrorResponse = {
