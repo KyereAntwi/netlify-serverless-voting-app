@@ -1,0 +1,11 @@
+[build]
+command = "npm run build" # Or "yarn build"
+publish = "dist"          # Default output directory for Vite React apps
+functions = "netlify/functions"
+
+# For local development with Auth0 (optional but good for consistency)
+[dev]
+# Set the target port for your React app
+targetPort = 5173
+# Netlify Dev will proxy requests to /api or /.netlify/functions to your functions
+# no need to manually set a proxy for functions

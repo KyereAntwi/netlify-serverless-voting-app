@@ -1,0 +1,13 @@
+// netlify/functions/tsconfig.json
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "../../.netlify/functions-dist" // Output compiled JS to a build directory
+  },
+  "include": ["./**/*.ts"]
+}
