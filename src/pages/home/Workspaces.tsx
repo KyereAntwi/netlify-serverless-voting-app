@@ -1,7 +1,6 @@
 import {
   Alert,
   AlertIcon,
-  Box,
   Divider,
   Flex,
   Heading,
@@ -25,7 +24,6 @@ import LoadingPage from "../../components/LoadingPage";
 import GeneralErrorPage from "../../components/GeneralErrorPage";
 import type { Workspace } from "../../models/types";
 import { AddIcon } from "@chakra-ui/icons";
-import useCreateWorkspace from "../../hooks/mutations/workstations/useCreateWorkspace";
 import WorkstationForm from "../../components/WorkstationForm";
 
 const WorkspaceList = ({ data }: { data: Workspace[] }) => {
