@@ -25,6 +25,8 @@ const handler: Handler = async (
       body: JSON.stringify(workspaces),
     };
   } catch (error: any) {
+    console.log("Error in get-all-workstations handler:", error);
+
     let err: ErrorResponse | undefined;
     err = JSON.parse(error) as ErrorResponse;
 
