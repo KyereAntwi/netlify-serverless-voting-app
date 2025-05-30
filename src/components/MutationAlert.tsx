@@ -19,13 +19,8 @@ export default function MutationAlert({
   status,
   title,
   description,
-  isOpen,
 }: MutationAlertProps) {
-  const {
-    isOpen: isVisible,
-    onClose,
-    onOpen,
-  } = useDisclosure({ defaultIsOpen: false });
+  const { onClose } = useDisclosure({ defaultIsOpen: false });
 
   return (
     <Alert status={status}>

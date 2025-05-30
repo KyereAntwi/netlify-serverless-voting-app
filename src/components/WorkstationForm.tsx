@@ -1,5 +1,5 @@
 import useCreateWorkspace from "../hooks/mutations/workstations/useCreateWorkspace";
-import { set, z, ZodType } from "zod";
+import { z, ZodType } from "zod";
 import type { CreateWorkspaceRequest, Workspace } from "../models/types";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
