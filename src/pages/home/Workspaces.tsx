@@ -32,7 +32,7 @@ const WorkspaceList = ({ data }: { data: Workspace[] }) => {
       <Table variant="simple">
         <Thead>
           <Tr>
-            <Th>Avatar</Th>
+            <Th></Th>
             <Th>Title</Th>
             <Th>Description</Th>
             <Th>Created At</Th>

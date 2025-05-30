@@ -12,7 +12,7 @@ export enum ErrorType {
 }
 
 export interface Workspace {
-  id: number;
+  id?: number;
   title: string;
   created_at: string;
   created_by: string;

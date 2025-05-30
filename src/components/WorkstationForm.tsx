@@ -1,5 +1,5 @@
 import useCreateWorkspace from "../hooks/mutations/workstations/useCreateWorkspace";
-import { z, ZodType } from "zod";
+import { set, z, ZodType } from "zod";
 import type { CreateWorkspaceRequest, Workspace } from "../models/types";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +18,7 @@ import {
   Button,
   Textarea,
 } from "@chakra-ui/react";
+import { useEffect } from "react";
 
 interface WorkstationFormProps {
   onClose: () => void;
@@ -29,6 +30,7 @@ const formSchema: ZodType<CreateWorkspaceRequest> = z.object({
   title: z.string().min(2, {
     message: "Workspace title should not be less than 2 characters",
   }),
+  description: z.string().optional(),
 });
 
 export default function WorkstationForm({
@@ -39,17 +41,29 @@ export default function WorkstationForm({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isValid },
   } = useForm<CreateWorkspaceRequest>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: workspace?.title! ?? "",
+      description: workspace?.description ?? "",
     },
   });
 
   const createWorkstationMutation = useCreateWorkspace({
     onSuccess: onClose,
   });
+
+  useEffect(() => {
+    if (!workspace) {
+      // Reset form values if no workspace is provided
+      reset({
+        title: "",
+        description: "",
+      });
+    }
+  }, [workspace]);
 
   const onSubmit: SubmitHandler<CreateWorkspaceRequest> = (data) => {
     if (workspace) {
@@ -92,7 +106,7 @@ export default function WorkstationForm({
                 rows={3}
                 {...register("description")}
                 placeholder="Workspace description here ..."
-              />
+              ></Textarea>
             </FormControl>
           </ModalBody>
 
