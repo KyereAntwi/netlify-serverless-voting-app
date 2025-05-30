@@ -19,6 +19,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
+import useUpdateWorkspaces from "../hooks/mutations/workstations/useUpdateWorkspaces";
 
 interface WorkstationFormProps {
   onClose: () => void;
@@ -55,9 +56,13 @@ export default function WorkstationForm({
     onSuccess: onClose,
   });
 
+  const editWorkspaceMutation = useUpdateWorkspaces({
+    onSuccess: onClose,
+    workspaceId: workspace?.id!,
+  });
+
   useEffect(() => {
     if (!workspace) {
-      // Reset form values if no workspace is provided
       reset({
         title: "",
         description: "",
@@ -67,7 +72,11 @@ export default function WorkstationForm({
 
   const onSubmit: SubmitHandler<CreateWorkspaceRequest> = (data) => {
     if (workspace) {
-      // update logic can be added here
+      editWorkspaceMutation.mutateAsync({
+        ...workspace,
+        title: data.title,
+        description: data.description,
+      });
     } else {
       createWorkstationMutation.mutateAsync(data);
     }
@@ -115,14 +124,20 @@ export default function WorkstationForm({
               colorScheme="blue"
               mr={3}
               type="submit"
-              isLoading={createWorkstationMutation.isPending}
+              isLoading={
+                createWorkstationMutation.isPending ||
+                editWorkspaceMutation.isPending
+              }
               isDisabled={!isValid}
             >
               Save
             </Button>
             <Button
               onClick={onClose}
-              isDisabled={createWorkstationMutation.isPending}
+              isDisabled={
+                createWorkstationMutation.isPending ||
+                editWorkspaceMutation.isPending
+              }
             >
               Cancel
             </Button>

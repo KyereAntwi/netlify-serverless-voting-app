@@ -13,7 +13,11 @@ export default function WorspaceItem({ workpace }: WorspaceItemProps) {
         <Avatar name={workpace.title} />
       </Td>
       <Td>
-        <Text fontWeight={"bold"} as={NavLink} to={"/"}>
+        <Text
+          fontWeight={"bold"}
+          as={NavLink}
+          to={`/workspaces/${workpace.id}`}
+        >
           {workpace.title}
         </Text>
       </Td>

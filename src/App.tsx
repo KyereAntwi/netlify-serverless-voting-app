@@ -3,6 +3,8 @@ import ProtectedLayout from "./components/ProtectedLayout";
 import Home from "./pages/home/Workspaces";
 import { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import Layout from "./pages/workspace-details/Layout";
+import Dashboard from "./pages/workspace-details/Dashboard";
 
 function App() {
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
@@ -19,6 +21,11 @@ function App() {
     <Routes>
       <Route path="/" element={<ProtectedLayout />}>
         <Route index element={<Home />} />
+        <Route path="workspaces" element={<Home />} />
+        <Route path="workspaces/:workspaceId" element={<Layout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="dashboard" element={<Dashboard />} />
+        </Route>
       </Route>
     </Routes>
   );
