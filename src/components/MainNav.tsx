@@ -84,7 +84,10 @@ const MainNav: React.FC = () => {
                 <MenuDivider />
                 <MenuItem
                   color="red.500"
-                  onClick={() => logout({ returnTo: window.location.origin })}
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    logout({ returnTo: window.location.origin });
+                  }}
                 >
                   Logout
                 </MenuItem>

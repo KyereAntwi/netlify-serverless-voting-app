@@ -30,6 +30,7 @@ import {
 } from "@chakra-ui/icons";
 import useDeleteWorkspace from "../../hooks/mutations/workstations/useDeleteWorkspace";
 import WorkstationForm from "../../components/WorkstationForm";
+import ECForm from "../ecs/ECForm";
 
 export default function Layout() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
@@ -37,6 +38,11 @@ export default function Layout() {
 
   const deleteMutation = useDeleteWorkspace();
   const { onClose, onOpen, isOpen } = useDisclosure();
+  const {
+    isOpen: isECFormOpen,
+    onClose: onECFormClose,
+    onOpen: onECFormOpen,
+  } = useDisclosure();
 
   return (
     <>
@@ -131,11 +137,11 @@ export default function Layout() {
                     <Divider />
 
                     <List spacing={3}>
-                      <ListItem>
+                      <ListItem cursor={"pointer"} onClick={onECFormOpen}>
                         <ListIcon as={AddIcon} color="green.500" />
                         Add EC Member
                       </ListItem>
-                      <ListItem>
+                      <ListItem cursor={"pointer"} as={NavLink} to={"ecs"}>
                         <ListIcon as={ListIcon} color="green.500" />
                         EC Membership List
                       </ListItem>
@@ -169,11 +175,19 @@ export default function Layout() {
       </Grid>
 
       {worksapce && (
-        <WorkstationForm
-          workspace={worksapce!}
-          onClose={onClose}
-          isOpen={isOpen}
-        />
+        <>
+          <WorkstationForm
+            workspace={worksapce!}
+            onClose={onClose}
+            isOpen={isOpen}
+          />
+
+          <ECForm
+            onClose={onECFormClose}
+            isOpen={isECFormOpen}
+            workspaceId={Number(workspaceId)}
+          />
+        </>
       )}
     </>
   );

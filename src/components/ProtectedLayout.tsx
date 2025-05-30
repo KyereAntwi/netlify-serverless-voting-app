@@ -3,7 +3,7 @@ import { Box, Flex, Spinner } from "@chakra-ui/react";
 import { Outlet } from "react-router";
 import MainNav from "./MainNav";
 
-const ProtectedOutlet = withAuthenticationRequired(Outlet, {
+export const ProtectedOutlet = withAuthenticationRequired(Outlet, {
   onRedirecting: () => (
     <Flex
       justifyContent={"center"}

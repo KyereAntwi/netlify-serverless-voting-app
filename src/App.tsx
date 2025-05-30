@@ -1,21 +1,31 @@
 import { Route, Routes } from "react-router";
 import ProtectedLayout from "./components/ProtectedLayout";
 import Home from "./pages/home/Workspaces";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import Layout from "./pages/workspace-details/Layout";
 import Dashboard from "./pages/workspace-details/Dashboard";
+import AllECS from "./pages/ecs/AllECS";
+import LoadingPage from "./components/LoadingPage";
 
 function App() {
-  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
+  const [tokenReady, setTokenReady] = useState(false);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      getAccessTokenSilently().then((token: any) => {
+    const setToken = async () => {
+      if (isAuthenticated) {
+        const token = await getAccessTokenSilently();
         localStorage.setItem("token", JSON.stringify(token));
-      });
-    }
-  }, [isAuthenticated]);
+      }
+      setTokenReady(true);
+    };
+    setToken();
+  }, [isAuthenticated, getAccessTokenSilently, localStorage]);
+
+  if (isLoading || !tokenReady) {
+    return <LoadingPage />;
+  }
 
   return (
     <Routes>
@@ -25,6 +35,7 @@ function App() {
         <Route path="workspaces/:workspaceId" element={<Layout />}>
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="ecs" element={<AllECS />} />
         </Route>
       </Route>
     </Routes>

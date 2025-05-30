@@ -1,26 +1,15 @@
-import type { AxiosInstance } from "axios";
 import createAxiosInstance from "./Axios";
-
-let axiosInstance: AxiosInstance;
-
-async function initializeAxios() {
-  axiosInstance = await createAxiosInstance();
-
-  axiosInstance.interceptors.response.use((config) => {
-    return config;
-  });
-}
-
-initializeAxios();
 
 const apiClient = {
   async get(url: string) {
+    const axiosInstance = await createAxiosInstance();
     return axiosInstance.get(url, {
       method: "GET",
     });
   },
 
   async post<TRequest>(url: string, data: TRequest, options?: Object) {
+    const axiosInstance = await createAxiosInstance();
     return await axiosInstance.post(
       url,
       data,
@@ -31,6 +20,7 @@ const apiClient = {
   },
 
   async put<TRequest>(url: string, data: TRequest, options?: Object) {
+    const axiosInstance = await createAxiosInstance();
     return await axiosInstance.put(
       url,
       data,
@@ -41,6 +31,7 @@ const apiClient = {
   },
 
   async delete(url: string) {
+    const axiosInstance = await createAxiosInstance();
     return await axiosInstance.delete(url, {
       method: "DELETE",
     });

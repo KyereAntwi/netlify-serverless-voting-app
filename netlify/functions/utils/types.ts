@@ -69,12 +69,18 @@ export interface Category {
   poll_id: number;
 }
 
-export interface ECS {
-  id: number;
+export interface EC {
+  id?: number;
   created_at: string;
   workspace_id: number;
   created_by: string;
-  user?: string;
+  user_name: string;
+  user_code: string;
+}
+
+export interface ECPoll {
+  ec_id: number;
+  poll_id: number;
 }
 
 export interface SimpleItem {
