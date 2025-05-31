@@ -103,7 +103,7 @@ const NomineesList = ({
       <Table variant={"simple"}>
         <Tbody>
           {nominees.map((nominee) => (
-            <CandidateItem nominee={nominee} />
+            <CandidateItem key={nominee.id} nominee={nominee} />
           ))}
         </Tbody>
       </Table>

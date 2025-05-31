@@ -14,6 +14,7 @@ import type { Candidate } from "../../models/types";
 import { DeleteIcon, EditIcon, HamburgerIcon, SunIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import CandidateForm from "./CandidateForm";
+import useDeleteNominee from "../../hooks/mutations/nominees/useDeleteNominee";
 
 interface Props {
   nominee: Candidate;
@@ -22,6 +23,8 @@ interface Props {
 export default function CandidateItem({ nominee }: Props) {
   const [hovered, setHovered] = useState<boolean>(false);
   const { isOpen, onClose, onOpen } = useDisclosure();
+
+  const deleteMutation = useDeleteNominee(nominee.workspace_id);
 
   return (
     <>
@@ -55,7 +58,12 @@ export default function CandidateItem({ nominee }: Props) {
               <MenuItem icon={<EditIcon />} onClick={onOpen}>
                 Edit
               </MenuItem>
-              <MenuItem icon={<DeleteIcon />}>Delete</MenuItem>
+              <MenuItem
+                icon={<DeleteIcon />}
+                onClick={() => deleteMutation.mutate(nominee.id)}
+              >
+                Delete
+              </MenuItem>
             </MenuList>
           </Menu>
         </Td>
