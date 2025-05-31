@@ -1,5 +1,12 @@
 import { createClient } from "@supabase/supabase-js";
-import { EC, ECPoll, ErrorResponse, ErrorType, Workspace } from "./types";
+import {
+  Candidate,
+  EC,
+  ECPoll,
+  ErrorResponse,
+  ErrorType,
+  Workspace,
+} from "./types";
 
 // Create a single supabase client for interacting with your database
 const supabase = createClient(
@@ -218,4 +225,112 @@ export const deleteECS = async (ecsId: number) => {
     throw new Error(JSON.stringify(err));
   }
   return data as EC;
+};
+
+// services for nominees
+export const getNomineeById = async (nomineeId: number) => {
+  const { data, error } = await supabase
+    .from("candidates")
+    .select("*")
+    .eq("id", nomineeId)
+    .single();
+
+  if (error) {
+    const err: ErrorResponse = {
+      message: error.message,
+      code: error.code,
+      type: ErrorType.InternalServerError,
+    };
+
+    throw new Error(JSON.stringify(err));
+  }
+  return data;
+};
+
+export const getAllNominees = async (
+  workspace_id: number,
+  keyword?: string
+) => {
+  let query = supabase
+    .from("candidates")
+    .select("*")
+    .eq("workspace_id", workspace_id)
+    .order("created_at", { ascending: false });
+
+  if (keyword && keyword.trim() !== "") {
+    query = query.or(
+      `first_name.ilike.%${keyword}%,last_name.ilike.%${keyword}%,other_names.ilike.%${keyword}%`
+    );
+  }
+
+  const { data, error } = await query;
+  if (error) {
+    const err: ErrorResponse = {
+      message: error.message,
+      code: error.code,
+      type: ErrorType.InternalServerError,
+    };
+
+    throw new Error(JSON.stringify(err));
+  }
+  return data;
+};
+
+export const createNominee = async (payload: Candidate) => {
+  const { data, error } = await supabase
+    .from("candidates")
+    .insert([payload])
+    .select("*")
+    .single();
+
+  if (error) {
+    const err: ErrorResponse = {
+      message: error.message,
+      code: error.code,
+      type: ErrorType.InternalServerError,
+    };
+
+    throw new Error(JSON.stringify(err));
+  }
+  return data;
+};
+
+export const updateNominee = async (payload: Candidate) => {
+  const { data, error } = await supabase
+    .from("candidates")
+    .update(payload)
+    .eq("id", payload.id)
+    .select("*")
+    .single();
+
+  if (error) {
+    const err: ErrorResponse = {
+      message: error.message,
+      code: error.code,
+      type: ErrorType.InternalServerError,
+    };
+
+    throw new Error(JSON.stringify(err));
+  }
+  return data;
+};
+
+export const deleteNominee = async (nomineeId: number) => {
+  const { data, error } = await supabase
+    .from("candidates")
+    .delete()
+    .eq("id", nomineeId)
+    .select("*")
+    .single();
+
+  if (error) {
+    const err: ErrorResponse = {
+      message: error.message,
+      code: error.code,
+      type: ErrorType.InternalServerError,
+    };
+
+    throw new Error(JSON.stringify(err));
+  }
+  return data;
 };

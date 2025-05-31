@@ -51,7 +51,7 @@ export interface Vote {
 }
 
 export interface Candidate {
-  id: number;
+  id?: number;
   created_at: string;
   created_by: string;
   first_name: string;

@@ -30,3 +30,21 @@ export interface ECPoll {
   ec_id: number;
   poll_id: number;
 }
+
+export interface Candidate {
+  id: number;
+  created_at: string;
+  created_by: string;
+  first_name: string;
+  last_name: string;
+  other_names?: string;
+  profile_image?: string;
+  workspace_id: number;
+}
+
+export interface CreateCandidateRequest {
+  first_name: string;
+  last_name: string;
+  other_names?: string;
+  workspace_id: number;
+}
