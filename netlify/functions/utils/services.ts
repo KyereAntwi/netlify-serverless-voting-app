@@ -5,6 +5,7 @@ import {
   ECPoll,
   ErrorResponse,
   ErrorType,
+  Poll,
   Workspace,
 } from "./types";
 
@@ -320,6 +321,71 @@ export const deleteNominee = async (nomineeId: number) => {
     .from("candidates")
     .delete()
     .eq("id", nomineeId)
+    .select("*")
+    .single();
+
+  if (error) {
+    const err: ErrorResponse = {
+      message: error.message,
+      code: error.code,
+      type: ErrorType.InternalServerError,
+    };
+
+    throw new Error(JSON.stringify(err));
+  }
+  return data;
+};
+
+// services for polls
+export const getAllPols = async (workspace_id: number, keyword?: string) => {
+  let query = supabase
+    .from("polls")
+    .select("*")
+    .eq("workspace_id", workspace_id)
+    .order("created_at", { ascending: false });
+
+  if (keyword && keyword.trim() !== "") {
+    query = query.or(`title.ilike.%${keyword}%,description.ilike.%${keyword}%`);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    const err: ErrorResponse = {
+      message: error.message,
+      code: error.code,
+      type: ErrorType.InternalServerError,
+    };
+
+    throw new Error(JSON.stringify(err));
+  }
+
+  return data;
+};
+
+export const getPollById = async (poll_id: number) => {
+  const { data, error } = await supabase
+    .from("polls")
+    .select("*")
+    .eq("id", poll_id)
+    .single();
+
+  if (error) {
+    const err: ErrorResponse = {
+      message: error.message,
+      code: error.code,
+      type: ErrorType.InternalServerError,
+    };
+
+    throw new Error(JSON.stringify(err));
+  }
+  return data;
+};
+
+export const createPoll = async (payload: Poll) => {
+  const { data, error } = await supabase
+    .from("polls")
+    .insert([payload])
     .select("*")
     .single();
 

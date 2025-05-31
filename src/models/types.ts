@@ -48,3 +48,43 @@ export interface CreateCandidateRequest {
   other_names?: string;
   workspace_id: number;
 }
+
+export interface Poll {
+  id: number;
+  title: string;
+  description?: string;
+  created_at: string;
+  start_date: string;
+  end_date: string;
+  workspace_id: number;
+  created_by: string;
+  is_active: boolean;
+  type: PollType;
+}
+
+export type PollType =
+  | "OpenBasic"
+  | "SecuredBasic"
+  | "OpenCategoryForCandidates"
+  | "OpenCategoryForItems"
+  | "SecuredCategoryForCandidates"
+  | "SecuredCategoryForItems";
+
+export interface CreatePollRequest {
+  title: string;
+  description?: string;
+  workspace_id: number;
+  start_date: string;
+  end_date: string;
+  type: PollType;
+  is_active: boolean;
+}
+
+export const pollTypeValues = [
+  "OpenBasic",
+  "SecuredBasic",
+  "OpenCategoryForCandidates",
+  "OpenCategoryForItems",
+  "SecuredCategoryForCandidates",
+  "SecuredCategoryForItems",
+] as const;

@@ -32,6 +32,7 @@ import useDeleteWorkspace from "../../hooks/mutations/workstations/useDeleteWork
 import WorkstationForm from "../../components/WorkstationForm";
 import ECForm from "../ecs/ECForm";
 import CandidateForm from "../candidates/CandidateForm";
+import PollForm from "../polls/PollForm";
 
 export default function Layout() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
@@ -48,6 +49,11 @@ export default function Layout() {
     isOpen: isNomFormOpen,
     onClose: onNomFormClose,
     onOpen: onNomFormOpen,
+  } = useDisclosure();
+  const {
+    isOpen: isPolFormOpen,
+    onClose: onPolFormClose,
+    onOpen: onPolFormOpen,
   } = useDisclosure();
 
   return (
@@ -130,11 +136,11 @@ export default function Layout() {
                     <Divider />
 
                     <List spacing={3}>
-                      <ListItem>
+                      <ListItem cursor={"pointer"} onClick={onPolFormOpen}>
                         <ListIcon as={AddIcon} color="green.500" />
                         Add Poll
                       </ListItem>
-                      <ListItem>
+                      <ListItem cursor={"pointer"} as={NavLink} to={"polls"}>
                         <ListIcon as={ListIcon} color="green.500" />
                         Polls List
                       </ListItem>
@@ -197,6 +203,12 @@ export default function Layout() {
           <CandidateForm
             onClose={onNomFormClose}
             isOpen={isNomFormOpen}
+            workspaceId={Number(workspaceId)}
+          />
+
+          <PollForm
+            onClose={onPolFormClose}
+            isOpen={isPolFormOpen}
             workspaceId={Number(workspaceId)}
           />
         </>

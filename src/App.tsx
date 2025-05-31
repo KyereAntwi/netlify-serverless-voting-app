@@ -8,6 +8,7 @@ import Dashboard from "./pages/workspace-details/Dashboard";
 import AllECS from "./pages/ecs/AllECS";
 import LoadingPage from "./components/LoadingPage";
 import Candidates from "./pages/candidates/Candidates";
+import Polls from "./pages/polls/Polls";
 
 function App() {
   const { getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
@@ -38,6 +39,7 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="ecs" element={<AllECS />} />
           <Route path="nominees" element={<Candidates />} />
+          <Route path="polls" element={<Polls />} />
         </Route>
       </Route>
     </Routes>

@@ -21,7 +21,7 @@ export interface Workspace {
 }
 
 export interface Poll {
-  id: number;
+  id?: number;
   title: string;
   description?: string;
   created_at: string;
@@ -29,13 +29,17 @@ export interface Poll {
   created_by: string;
   is_active: boolean;
   type: PollType;
+  start_date: string;
+  end_date: string;
 }
 
-export enum PollType {
-  Single = "Single",
-  NonAutorisedCategory = "NonAutorisedCategory",
-  AutorisedCategory = "AutorisedCategory",
-}
+export type PollType =
+  | "OpenBasic"
+  | "SecuredBasic"
+  | "OpenCategoryForCandidates"
+  | "OpenCategoryForItems"
+  | "SecuredCategoryForCandidates"
+  | "SecuredCategoryForItems";
 
 export interface CandidatePoll {
   category_id: number;
