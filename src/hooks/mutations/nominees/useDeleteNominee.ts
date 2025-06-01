@@ -17,11 +17,11 @@ export default function useDeleteNominee(workspace_id: number) {
         denyButtonText: `Cancel`,
       }).then((result) => {
         if (result.isConfirmed) {
-          queryClient.invalidateQueries({
-            queryKey: ["nominees", workspace_id],
-          });
-
           return deleteCandidate(nomineeId).then(() => {
+            queryClient.invalidateQueries({
+              queryKey: ["nominees", workspace_id],
+            });
+
             toast({
               title: `Nominee was deleted successfully`,
               status: "success",

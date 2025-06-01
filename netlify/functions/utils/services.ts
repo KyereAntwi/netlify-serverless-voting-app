@@ -400,3 +400,23 @@ export const createPoll = async (payload: Poll) => {
   }
   return data;
 };
+
+export const updatePoll = async (payload: Poll) => {
+  const { data, error } = await supabase
+    .from("polls")
+    .update(payload)
+    .eq("id", payload.id)
+    .select("*")
+    .single();
+
+  if (error) {
+    const err: ErrorResponse = {
+      message: error.message,
+      code: error.code,
+      type: ErrorType.InternalServerError,
+    };
+
+    throw new Error(JSON.stringify(err));
+  }
+  return data as Poll;
+};
