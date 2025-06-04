@@ -31,6 +31,7 @@ import {
   DrawerBody,
 } from "@chakra-ui/react";
 import useCreatePoll from "../../hooks/mutations/polls/useCreatePoll";
+import useUpdatePoll from "../../hooks/mutations/polls/useUpdatePoll";
 
 interface Props {
   onClose: () => void;
@@ -144,6 +145,12 @@ export default function PollForm({
     workspace_id: workspaceId,
   });
 
+  const updateMutaion = useUpdatePoll({
+    id: poll?.id!,
+    workspaceId: poll?.workspace_id,
+    onSuccess: onClose,
+  });
+
   useEffect(() => {
     if (!poll) {
       reset({
@@ -163,6 +170,15 @@ export default function PollForm({
     data: CreatePollRequest
   ) => {
     if (poll) {
+      updateMutaion.mutateAsync({
+        ...poll,
+        title: data.title,
+        description: data.description,
+        start_date: data.start_date,
+        end_date: data.end_date,
+        type: data.type,
+        is_active: data.is_active,
+      });
     } else {
       createMutation.mutateAsync(data);
     }
@@ -301,12 +317,19 @@ export default function PollForm({
                   colorScheme="blue"
                   mr={3}
                   type="submit"
-                  isLoading={createMutation.isPending}
+                  isLoading={
+                    createMutation.isPending || updateMutaion.isPending
+                  }
                   isDisabled={!isValid}
                 >
                   Save
                 </Button>
-                <Button onClick={onClose} isDisabled={createMutation.isPending}>
+                <Button
+                  onClick={onClose}
+                  isDisabled={
+                    createMutation.isPending || updateMutaion.isPending
+                  }
+                >
                   Cancel
                 </Button>
               </FormControl>

@@ -9,7 +9,7 @@ export const getAllPolls = async (workspace_id: number) => {
 };
 
 export const getPollById = async (id: number) => {
-  const response = await apiClient.get("/get-p0ll-byid?id=" + id);
+  const response = await apiClient.get("/get-poll-byid?id=" + id);
   return response.data;
 };
 

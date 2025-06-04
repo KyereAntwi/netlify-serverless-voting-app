@@ -9,6 +9,8 @@ import AllECS from "./pages/ecs/AllECS";
 import LoadingPage from "./components/LoadingPage";
 import Candidates from "./pages/candidates/Candidates";
 import Polls from "./pages/polls/Polls";
+import PollLayout from "./pages/poll-details/Layout";
+import PollDetailsWelcome from "./pages/poll-details/PollDetailsWelcome";
 
 function App() {
   const { getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
@@ -40,6 +42,12 @@ function App() {
           <Route path="ecs" element={<AllECS />} />
           <Route path="nominees" element={<Candidates />} />
           <Route path="polls" element={<Polls />} />
+        </Route>
+        <Route
+          path="workspaces/:workspaceId/polls/:pollId"
+          element={<PollLayout />}
+        >
+          <Route index element={<PollDetailsWelcome />} />
         </Route>
       </Route>
     </Routes>

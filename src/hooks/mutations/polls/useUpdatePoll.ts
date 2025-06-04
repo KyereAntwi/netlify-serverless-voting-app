@@ -6,9 +6,10 @@ import { updatePoll } from "../../../services/polls";
 interface Prop {
   id: number;
   workspaceId?: number;
+  onSuccess?: () => void;
 }
 
-export default function useUpdatePoll({ id, workspaceId }: Prop) {
+export default function useUpdatePoll({ id, workspaceId, onSuccess }: Prop) {
   const toast = useToast();
   const queryClient = useQueryClient();
 
@@ -34,6 +35,10 @@ export default function useUpdatePoll({ id, workspaceId }: Prop) {
         duration: 9000,
         isClosable: true,
       });
+
+      if (onSuccess) {
+        onSuccess();
+      }
     },
 
     onError: (error: Error) => {
