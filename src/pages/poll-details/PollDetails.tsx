@@ -25,20 +25,33 @@ import {
   MenuItem,
   MenuList,
   MenuDivider,
-  useDisclosure,
+  useDisclosure, Breadcrumb, BreadcrumbItem, BreadcrumbLink,
 } from "@chakra-ui/react";
-import { NavLink } from "react-router";
+import {NavLink} from "react-router";
 import { type Poll } from "../../models/types";
 import TogglePollStatus from "../../components/TogglePollStatus";
 import PollForm from "../polls/PollForm";
+import CategoryForm from "./CategoryFrom.tsx";
+import {useSelectedPollTypeContext} from "../../contexts/SelectedPollTypeContext.tsx";
+import {useEffect} from "react";
 
 interface Props {
   poll: Poll;
 }
 
 export default function PollDetails({ poll }: Props) {
-  const { type, title, description, workspace_id } = poll;
+  const { type, title, description, workspace_id, id } = poll;
+  
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const {isOpen: isCategoryOpen, onClose: onCategoryClose, onOpen: onCategoryOpen} = useDisclosure();
+  
+  const {setValue} = useSelectedPollTypeContext();
+
+  useEffect(() => {
+    if (poll) {
+      setValue(poll.type)
+    }
+  }, [poll]);
 
   return (
     <>
@@ -51,6 +64,26 @@ export default function PollDetails({ poll }: Props) {
         >
           Go back to Polls list
         </Button>
+        
+        <Spacer />
+
+        <Breadcrumb>
+          <BreadcrumbItem>
+            <BreadcrumbLink as={NavLink} to={`/workspaces/${workspace_id}/polls/${id}`}>Home</BreadcrumbLink>
+          </BreadcrumbItem>
+
+          {!type.includes("Basic") && (
+              <BreadcrumbItem>
+                <BreadcrumbLink as={NavLink} to={`/workspaces/${workspace_id}/polls/${id}/categories`}>Categories</BreadcrumbLink>
+              </BreadcrumbItem>
+          )}
+
+          {type.includes("Basic") && (
+              <BreadcrumbItem>
+                <BreadcrumbLink href='#'>Basic Items</BreadcrumbLink>
+              </BreadcrumbItem>
+          )}
+        </Breadcrumb>
       </HStack>
       <HStack my={4}>
         <Avatar size={"lg"} name={poll?.title} />
@@ -82,6 +115,7 @@ export default function PollDetails({ poll }: Props) {
                   <MenuItem
                     isDisabled={type.includes("Basic")}
                     icon={<SettingsIcon />}
+                    onClick={onCategoryOpen}
                   >
                     Add Category
                   </MenuItem>
@@ -120,6 +154,12 @@ export default function PollDetails({ poll }: Props) {
         onClose={onClose}
         workspaceId={workspace_id}
       />
+      
+      <CategoryForm 
+          isOpen={isCategoryOpen} 
+          onClose={onCategoryClose} 
+          pollId={poll.id} 
+          workspaceId={workspace_id} />
     </>
   );
 }

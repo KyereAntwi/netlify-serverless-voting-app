@@ -21,14 +21,14 @@ export default function useDeleteEC({ workspace_id }: DeleteECProps) {
         denyButtonText: `Cancel`,
       }).then((result) => {
         if (result.isConfirmed) {
-          queryClient.invalidateQueries({ queryKey: ["ecs", workspace_id] });
-
           return deleteEC(ec_id).then(() => {
             toast({
               title: `EC was deleted successfully`,
               status: "success",
               isClosable: true,
             });
+
+            queryClient.invalidateQueries({ queryKey: ["ecs", workspace_id] });
           });
         } else if (result.isDenied) {
           return;

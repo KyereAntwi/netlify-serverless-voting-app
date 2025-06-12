@@ -88,3 +88,15 @@ export const pollTypeValues = [
   "SecuredCategoryForCandidates",
   "SecuredCategoryForItems",
 ] as const;
+
+export interface Category {
+  id: number;
+  created_at: string;
+  title: string;
+  poll_id: number;
+}
+
+export interface CreateCategoryRequest {
+  title: string;
+  poll_id: number;
+}

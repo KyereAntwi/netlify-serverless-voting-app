@@ -66,10 +66,9 @@ export interface Candidate {
 }
 
 export interface Category {
-  id: number;
+  id?: number;
   created_at: string;
   title: string;
-  description?: string;
   poll_id: number;
 }
 

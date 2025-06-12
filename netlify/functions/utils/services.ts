@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import {
-  Candidate,
+  Candidate, Category,
   EC,
   ECPoll,
   ErrorResponse,
@@ -420,3 +420,106 @@ export const updatePoll = async (payload: Poll) => {
   }
   return data as Poll;
 };
+
+// services for categories
+export const getCategoryById = async (category_id: number) => {
+  let query = supabase
+      .from("categories")
+      .select("*")
+      .eq("id", category_id)
+      .single();
+
+  const { data, error } = await query;
+
+  if (error) {
+    const err: ErrorResponse = {
+      message: error.message,
+      code: error.code,
+      type: ErrorType.InternalServerError,
+    };
+
+    throw new Error(JSON.stringify(err));
+  }
+  return data;
+}
+
+export const getPollCategories = async (poll_id: number) => {
+  let query = supabase
+      .from("categories")
+      .select("*")
+      .eq("poll_id", poll_id)
+      .order("created_at", { ascending: false });
+  
+  const { data, error } = await query;
+  
+  if (error) {
+    const err: ErrorResponse = {
+      message: error.message,
+      code: error.code,
+      type: ErrorType.InternalServerError,
+    };
+    
+    throw new Error(JSON.stringify(err));
+  }
+  
+  return data;
+}
+
+export const createCategory = async (payload: Category) => {
+  const { data, error } = await supabase
+      .from("categories")
+      .insert([payload])
+      .select("*")
+      .single();
+
+  if (error) {
+    const err: ErrorResponse = {
+      message: error.message,
+      code: error.code,
+      type: ErrorType.InternalServerError,
+    };
+
+    throw new Error(JSON.stringify(err));
+  }
+  return data;
+}
+
+export const updateCategory = async (payload: Category) => {
+  const { data, error } = await supabase
+      .from("categories")
+      .update(payload)
+      .eq("id", payload.id)
+      .select("*")
+      .single();
+
+  if (error) {
+    const err: ErrorResponse = {
+      message: error.message,
+      code: error.code,
+      type: ErrorType.InternalServerError,
+    };
+
+    throw new Error(JSON.stringify(err));
+  }
+  return data;
+}
+
+export const deleteCategory = async (category_id: number) => {
+  const { data, error } = await supabase
+      .from("categories")
+      .delete()
+      .eq("id", category_id)
+      .select("*")
+      .single();
+
+  if (error) {
+    const err: ErrorResponse = {
+      message: error.message,
+      code: error.code,
+      type: ErrorType.InternalServerError,
+    };
+
+    throw new Error(JSON.stringify(err));
+  }
+  return data;
+}

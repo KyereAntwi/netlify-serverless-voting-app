@@ -11,6 +11,9 @@ import Candidates from "./pages/candidates/Candidates";
 import Polls from "./pages/polls/Polls";
 import PollLayout from "./pages/poll-details/Layout";
 import PollDetailsWelcome from "./pages/poll-details/PollDetailsWelcome";
+import Categories from "./pages/poll-details/Categories.tsx";
+
+import "./App.css"
 
 function App() {
   const { getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
@@ -48,6 +51,7 @@ function App() {
           element={<PollLayout />}
         >
           <Route index element={<PollDetailsWelcome />} />
+          <Route path="categories" element={<Categories />} />
         </Route>
       </Route>
     </Routes>

@@ -1,0 +1,5 @@
+.active {
+    background-color: #f0f4ff; /* light highlight */
+    text-decoration: underline;
+    font-weight: bold;
+}
