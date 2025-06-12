@@ -22,3 +22,8 @@ export const updatePoll = async (data: Poll) => {
   const response = await apiClient.put("/update-poll", data);
   return response.data;
 };
+
+export const deletePoll = async (id: number) => {
+  const response = await apiClient.delete(`/delete-poll?id=${id}`);
+  return response.data;
+}

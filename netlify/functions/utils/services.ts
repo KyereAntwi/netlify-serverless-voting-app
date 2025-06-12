@@ -421,6 +421,27 @@ export const updatePoll = async (payload: Poll) => {
   return data as Poll;
 };
 
+export const deletePoll = async (poll_id: number) => {
+  const { data, error } = await supabase
+      .from("polls")
+      .delete()
+      .eq("id", poll_id)
+      .select("*")
+      .single();
+
+  if (error) {
+    const err: ErrorResponse = {
+      message: error.message,
+      code: error.code,
+      type: ErrorType.InternalServerError,
+    };
+
+    throw new Error(JSON.stringify(err));
+  }
+  
+  return data;
+}
+
 // services for categories
 export const getCategoryById = async (category_id: number) => {
   let query = supabase

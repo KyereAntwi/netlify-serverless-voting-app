@@ -34,6 +34,7 @@ import PollForm from "../polls/PollForm";
 import CategoryForm from "./CategoryFrom.tsx";
 import {useSelectedPollTypeContext} from "../../contexts/SelectedPollTypeContext.tsx";
 import {useEffect} from "react";
+import useDeletePoll from "../../hooks/mutations/polls/useDeletePoll.ts";
 
 interface Props {
   poll: Poll;
@@ -46,6 +47,8 @@ export default function PollDetails({ poll }: Props) {
   const {isOpen: isCategoryOpen, onClose: onCategoryClose, onOpen: onCategoryOpen} = useDisclosure();
   
   const {setValue} = useSelectedPollTypeContext();
+  
+  const deleteMutation = useDeletePoll(workspace_id!)
 
   useEffect(() => {
     if (poll) {
@@ -138,7 +141,10 @@ export default function PollDetails({ poll }: Props) {
                   <MenuDivider />
                   <MenuItem icon={<RepeatIcon />}>Clone Poll</MenuItem>
                   <MenuDivider />
-                  <MenuItem icon={<DeleteIcon />} color={"red"}>
+                  <MenuItem 
+                      icon={<DeleteIcon />} 
+                      color={"red"} 
+                      onClick={() => deleteMutation.mutateAsync(id)}>
                     Completely delete poll
                   </MenuItem>
                 </MenuList>
